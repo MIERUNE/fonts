@@ -11,7 +11,18 @@ Noto Sans CJK JP は Adobe-Japan1 由来のラテン文字しか持たないた�
 - フォントごとに ascender が違うため、追加するグリフの `top` を既存スタックの ascender（`stacks.json` の `ascender`）に合わせて補正し、ベースラインを揃えます
 - 何度実行しても同じ結果になります（冪等）
 
-補うフォント：Noto Sans（ラテン・ギリシャ・キリル）、Arabic、Hebrew、Armenian、Georgian、Thai、Lao、Khmer、Myanmar、Devanagari、Bengali、Gurmukhi、Gujarati、Oriya、Tamil、Telugu、Kannada、Malayalam、Sinhala、Ethiopic、Thaana、Syriac、Mongolian、Tifinagh、Cherokee、Canadian Aboriginal
+補うフォント：Noto Sans（ラテン・ギリシャ・キリル）、Arabic、Hebrew、Armenian、Georgian、Thai、Lao、Ethiopic、Thaana、Tifinagh、Cherokee、Canadian Aboriginal
+
+### 対象外にした文字
+
+MapLibre は文字の整形（シェーピング）をしないため、字形があっても正しく表示できない文字は追加していません。
+
+- インド系文字（Devanagari、Bengali、Gurmukhi、Gujarati、Oriya、Tamil、Telugu、Kannada、Malayalam、Sinhala）：結合・並べ替えが必要
+- Khmer、Myanmar：下付き文字・並べ替えが必要
+- Syriac：文字の連結が必要（RTL プラグインはアラビア文字しか整形しない）
+- Mongolian：縦書きと文字の連結が必要
+
+これらの地域でも、スタイルが `name:latin` を併記していればラテン文字の名前は表示されます。
 
 ## 実行
 
@@ -24,7 +35,6 @@ bash scripts/world-glyphs/build.sh
 
 ## 制約
 
-- グリフ（字形）が揃うだけで、文字の整形（シェーピング）は MapLibre 側の機能に依存します
-  - アラビア語・ヘブライ語の右から左の表示には MapLibre の RTL テキストプラグインが必要です
-  - インド系文字・タイ語などの結合文字は、MapLibre ではシェーピングされないため崩れて表示されることがあります（文字が消えることはなくなります）
+- アラビア語・ヘブライ語・ディベヒ語（Thaana）の右から左の表示には、MapLibre GL JS では RTL テキストプラグインが必要です（maplibre-native / chiitiler は標準で対応）
+- タイ語・ラオ語は、声調記号が重なる場合にわずかにずれることがあります
 - `Noto Sans CJK JP Light` は対象外です
